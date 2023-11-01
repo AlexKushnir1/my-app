@@ -5,11 +5,10 @@ import Board from './Board';
 const Game = () => {
   const [gameState, setGameState] = useState({
     gameField: Array(3).fill(Array(3).fill(null)),
-    winner: null,  // Переможець (null або 'x' або 'o')
+    winner: null,  // Winner (null or 'x' or 'o')
   });
 
   const [currentSign, setCurrentSign] = useState("x");
-
 
   const makeMove = async (x, y) => {
     console.log('Sign', currentSign);
@@ -22,7 +21,6 @@ const Game = () => {
     });
 
     if (response.ok) {
-      console.log('Response ok');
       const gameState = await response.json();
       setGameState(gameState)
       setCurrentSign(prev => {
@@ -42,8 +40,7 @@ const Game = () => {
 
   const startNewGame = async () => {
     const response = await fetch('http://localhost:8080/new_game', {
-      method: 'POST',
-
+      method: 'POST'
     });
     if (response.ok) {
       const gameField = await response.json();

@@ -7,9 +7,7 @@ export const Square = ({x,y,sign,makeMove}) => {
       {sign}
     </button>
   );
-
 }
-
 export default Square;
 
 
