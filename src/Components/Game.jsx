@@ -12,6 +12,7 @@ const Game = () => {
 
 
   const makeMove = async (x, y) => {
+    console.log('Sign', currentSign);
     const response = await fetch('http://localhost:8080/move', {
       method: 'POST',
       headers: {
@@ -21,16 +22,23 @@ const Game = () => {
     });
 
     if (response.ok) {
-      console.log(x,y," x and y from square")
+      console.log('Response ok');
       const gameState = await response.json();
       setGameState(gameState)
+      setCurrentSign(prev => {
+        console.log(prev);
+        return prev === "x" ? "o" : "x"
+      });
     };
-    setCurrentSign(currentSign === "x" ? "o" : "x");
   }
 
   useEffect(() => {
     console.log("Updating game state(useeffect) ",gameState);
   }, [gameState]);
+
+  useEffect(() => {
+    console.log("Updating current sign(useeffect) ",currentSign);
+  }, [currentSign]);
 
   const startNewGame = async () => {
     const response = await fetch('http://localhost:8080/new_game', {
@@ -58,7 +66,6 @@ const Game = () => {
       <Board
         gameState={gameState}
         makeMove={makeMove}
-        currentSign={currentSign}
         startNewGame={startNewGame}
       />
     </div>

@@ -4,23 +4,37 @@ import Square from '../Components/Square';
 
 const Board = ({ gameState, makeMove, startNewGame}) => {
   // Масив для збереження компонентів Square
-  const squares = [];
+  // const squares = [];
   console.log("Creating Board: ", gameState)
+  
+  // for (let x = 0; x < 3; x++) {
+  //   for (let y = 0; y < 3; y++) {
+  //     // console.log(x,y,{x},{y},"in a board")
+  //     console.log(gameState.gameField[x][y])
+  //     squares.push(
+  //       <Square
+  //         key={`${x}-${y}`}
+  //         x={x}
+  //         y={y}
+  //         makeMove={makeMove}
+  //         sign={gameState.gameField[x][y]}
+  //       />
+  //     );
+  //   }
+  // }
 
-  for (let x = 0; x < 3; x++) {
-    for (let y = 0; y < 3; y++) {
-      // console.log(x,y,{x},{y},"in a board")
-      squares.push(
-        <Square
-          key={`${x}-${y}`}
-          x={x}
-          y={y}
-          makeMove={makeMove}
-          sign={gameState.gameField[x][y]}
-        />
-      );
-    }
-  }
+  const squares = gameState.gameField.map((field,x)=> {
+    return field.map((box,y) => {
+      return <Square
+            key={`${x}-${y}`}
+            x={x}
+            y={y}
+            makeMove={makeMove}
+            sign={box}
+          />
+    })
+  })
+
 
   return (
     <div>
