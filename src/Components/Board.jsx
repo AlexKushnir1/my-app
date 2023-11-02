@@ -2,23 +2,20 @@ import React from 'react';
 import './Board.css';
 import Square from '../Components/Square';
 
-const Board = ({ makeMove, startNewGame }) => {
-  // Масив для збереження компонентів Square
-  const squares = [];
+const Board = ({ gameState, makeMove, startNewGame}) => {
+  console.log("Creating Board: ", gameState)
 
-  for (let x = 0; x < 3; x++) {
-    for (let y = 0; y < 3; y++) {
-      squares.push(
-        <Square
-          key={`${x}-${y}`}
-          x={x}
-          y={y}
-          makeMove={makeMove}
-          startNewGame={startNewGame}
-        />
-      );
-    }
-  }
+  const squares = gameState.gameField.map((row,x)=> {
+    return row.map((sign,y) => {
+      return <Square
+            key={`${x}-${y}`}
+            x={x}
+            y={y}
+            makeMove={makeMove}
+            sign={sign}
+          />
+    })
+  })
 
   return (
     <div>
@@ -26,42 +23,9 @@ const Board = ({ makeMove, startNewGame }) => {
         {squares}
       </div>
       <button onClick={startNewGame}>Нова гра</button>
+      {gameState.winner ? <h1 className="winner">Winner: {gameState.winner}</h1> : null}
     </div>
   );
 }
 
 export default Board;
-
-
-
-
-
-
-  // const renderSquare = (i) => {
-  //   return (
-  //     <Square
-  //       value={props.squares[i]}
-  //       onClick={() => props.onClick(i)}
-  //     />
-  //   );
-  // };
-
-  // return (
-  //   <div>
-  //     <div className="board-row">
-  //       {renderSquare(0)}
-  //       {renderSquare(1)}
-  //       {renderSquare(2)}
-  //     </div>
-  //     <div className="board-row">
-  //       {renderSquare(3)}
-  //       {renderSquare(4)}
-  //       {renderSquare(5)}
-  //     </div>
-  //     <div className="board-row">
-  //       {renderSquare(6)}
-  //       {renderSquare(7)}
-  //       {renderSquare(8)}
-  //     </div>
-  //   </div>
-  // );
