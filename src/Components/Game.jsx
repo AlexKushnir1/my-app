@@ -43,11 +43,11 @@ const Game = () => {
       method: 'POST'
     });
     if (response.ok) {
-      const gameField = await response.json();
+      const gameFieldFromServer = await response.json();
       console.log("Old gamestate:", gameState)
-      console.log("New gamestate:", gameField)
+      console.log("New game field from a server:", gameFieldFromServer)
       let newGameState = {
-        gameField: gameField,
+        gameField: gameFieldFromServer,
         winner: null
       }
       setGameState(newGameState);

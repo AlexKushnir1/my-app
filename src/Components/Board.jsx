@@ -5,14 +5,14 @@ import Square from '../Components/Square';
 const Board = ({ gameState, makeMove, startNewGame}) => {
   console.log("Creating Board: ", gameState)
 
-  const squares = gameState.gameField.map((field,x)=> {
-    return field.map((box,y) => {
+  const squares = gameState.gameField.map((row,x)=> {
+    return row.map((sign,y) => {
       return <Square
             key={`${x}-${y}`}
             x={x}
             y={y}
             makeMove={makeMove}
-            sign={box}
+            sign={sign}
           />
     })
   })
