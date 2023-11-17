@@ -6,37 +6,28 @@ const Game = () => {
   const [gameState, setGameState] = useState({
     gameField: Array(3).fill(Array(3).fill(null)),
     winner: null,  // Winner (null or 'x' or 'o')
+    sign : null,
+    tie : null
   });
 
-  const [currentSign, setCurrentSign] = useState("x");
-
   const makeMove = async (x, y) => {
-    console.log('Sign', currentSign);
     const response = await fetch('http://localhost:8080/move', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ x, y, sign: currentSign }),
+      body: JSON.stringify({ x, y }),
     });
 
     if (response.ok) {
       const gameState = await response.json();
       setGameState(gameState)
-      setCurrentSign(prev => {
-        console.log(prev);
-        return prev === "x" ? "o" : "x"
-      });
     };
   }
 
   useEffect(() => {
     console.log("Updating game state(useeffect) ",gameState);
   }, [gameState]);
-
-  useEffect(() => {
-    console.log("Updating current sign(useeffect) ",currentSign);
-  }, [currentSign]);
 
   const startNewGame = async () => {
     const response = await fetch('http://localhost:8080/new_game', {
@@ -48,10 +39,11 @@ const Game = () => {
       console.log("New game field from a server:", gameFieldFromServer)
       let newGameState = {
         gameField: gameFieldFromServer,
-        winner: null
+        winner: null,
+        sign: null,
+        tie: false
       }
       setGameState(newGameState);
-      setCurrentSign("x")
       console.log("Gamestate updated")
     } else {
       throw Error("Failed starting new game")
