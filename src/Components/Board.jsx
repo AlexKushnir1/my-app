@@ -24,6 +24,7 @@ const Board = ({ gameState, makeMove, startNewGame}) => {
       </div>
       <button onClick={startNewGame}>Нова гра</button>
       {gameState.winner ? <h1 className="winner">Winner: {gameState.winner}</h1> : null}
+      {gameState.tie ? <h1 className="tie">Tie</h1> : null}
     </div>
   );
 }
