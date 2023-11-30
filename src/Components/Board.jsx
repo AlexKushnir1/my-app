@@ -19,12 +19,13 @@ const Board = ({ gameState, makeMove, startNewGame}) => {
 
   return (
     <div>
+      <h2 style={{ color: 'white' }}>Current Sign: {gameState.sign}</h2>
       <div className="board">
         {squares}
       </div>
       <button onClick={startNewGame}>Нова гра</button>
-      {gameState.winner ? <h1 className="winner">Winner: {gameState.winner}</h1> : null}
-      {gameState.tie ? <h1 className="tie">Tie</h1> : null}
+      {gameState.winner ? <h1 className="winner" style={{ color: 'white' }}>Winner: {gameState.winner}</h1> : null}
+      {gameState.tie ? <h1 className="tie" style={{ color: 'white' }}>Tie</h1> : null}
     </div>
   );
 }

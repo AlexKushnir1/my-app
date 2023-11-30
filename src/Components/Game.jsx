@@ -11,7 +11,7 @@ const Game = () => {
   });
 
   const makeMove = async (x, y) => {
-    const response = await fetch('http://localhost:8080/move', {
+    const response = await fetch('http://34.116.199.106:8080/move', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -26,9 +26,33 @@ const Game = () => {
   }
 
   useEffect(() => {
-    console.log("Updating game state(useeffect) ",gameState);
-  }, [gameState]);
-
+    const fetchDataWithDelay = async () => {
+      // Затримка в 2 секунди
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      try {
+        const response = await fetch('http://localhost:8080/get_state', {
+          method: 'GET'
+        });
+  
+        if (response.ok) {
+          const gameStateFromServer = await response.json();
+          setGameState(gameStateFromServer);
+        } else {
+          throw Error("Failed to get state from server");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+  
+    // Викликати функцію із затримкою та отримати ідентифікатор інтервалу
+    const intervalId = setInterval(fetchDataWithDelay, 1000);
+  
+    // Очищення інтервалу при відмонтажі компонента
+    return () => clearInterval(intervalId);
+  }, []);
+  
   const startNewGame = async () => {
     const response = await fetch('http://localhost:8080/new_game', {
       method: 'POST'
