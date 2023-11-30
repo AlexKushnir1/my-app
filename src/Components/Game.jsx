@@ -31,7 +31,7 @@ const Game = () => {
       await new Promise(resolve => setTimeout(resolve, 2000));
       
       try {
-        const response = await fetch('http://localhost:8080/get_state', {
+        const response = await fetch('http://34.116.199.106:8080/get_state', {
           method: 'GET'
         });
   
@@ -54,7 +54,7 @@ const Game = () => {
   }, []);
   
   const startNewGame = async () => {
-    const response = await fetch('http://localhost:8080/new_game', {
+    const response = await fetch('http://34.116.199.106:8080/new_game', {
       method: 'POST'
     });
     if (response.ok) {
