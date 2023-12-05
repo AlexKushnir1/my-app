@@ -1,64 +1,56 @@
-import React, { useState, useEffect } from 'react';
-import './Game.css';
-import Board from './Board';
+import React, { useState, useEffect } from "react";
+import "./Game.css";
+import Board from "./Board";
+import { createSession } from "../createSession";
+import { getGameState } from "../getGameState";
+import { makeMove } from "../makeMove";
+
+export const BASE_URL = "http://34.118.92.227:8080";
 
 const Game = () => {
   const [gameState, setGameState] = useState({
     gameField: Array(3).fill(Array(3).fill(null)),
-    winner: null,  // Winner (null or 'x' or 'o')
-    sign : null,
-    tie : null
+    winner: null, // Winner (null or 'x' or 'o')
+    sign: null,
+    tie: null,
   });
 
-  const makeMove = async (x, y) => {
-    const response = await fetch('http://localhost:8080/move', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ x, y }),
-    });
+  const [sessionState, setSessionState] = useState(null);
 
-    if (response.ok) {
-      const gameState = await response.json();
-      setGameState(gameState)
-    };
-  }
-
-  useEffect(() => {
-    console.log("Updating game state(useeffect) ",gameState);
-  }, [gameState]);
+  const onMakeMove = async (x, y) => {
+    try {
+      if (sessionState) {
+        const updatedState = await makeMove(sessionState, x, y);
+        setGameState(updatedState);
+      } else {
+        const newSession = await startNewGame();
+        const updatedState = await makeMove(newSession, x, y);
+        setGameState(updatedState);
+      }
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
 
   const startNewGame = async () => {
-    const response = await fetch('http://localhost:8080/new_game', {
-      method: 'POST'
-    });
-    if (response.ok) {
-      const gameFieldFromServer = await response.json();
-      console.log("Old gamestate:", gameState)
-      console.log("New game field from a server:", gameFieldFromServer)
-      let newGameState = {
-        gameField: gameFieldFromServer,
-        winner: null,
-        sign: null,
-        tie: false
-      }
-      setGameState(newGameState);
-      console.log("Gamestate updated")
-    } else {
-      throw Error("Failed starting new game")
-    };
-  }
+    try {
+      const session = await createSession();
+      setSessionState(session);
+
+      const gameState = await getGameState(session);
+      setGameState(gameState);
+
+      return session;
+    } catch (error) {
+      throw new Error(error.message);
+    }
+  };
 
   return (
     <div className="wrapper">
-      <Board
-        gameState={gameState}
-        makeMove={makeMove}
-        startNewGame={startNewGame}
-      />
+      <Board gameState={gameState} makeMove={onMakeMove} startNewGame={startNewGame} />
     </div>
   );
-}
+};
 
 export default Game;

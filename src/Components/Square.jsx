@@ -1,13 +1,11 @@
 import React from "react";
-import './Square.css';
+import "./Square.css";
 
-export const Square = ({x,y,sign,makeMove}) => {
+export const Square = ({ x, y, sign, makeMove }) => {
   return (
-    <button className="square" onClick={() => makeMove(x,y)}>
+    <button className="square" onClick={() => makeMove(x, y)}>
       {sign}
     </button>
   );
-}
+};
 export default Square;
-
-
