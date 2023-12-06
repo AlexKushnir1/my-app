@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./Game.css";
 import Board from "./Board";
 import { createSession } from "../createSession";
@@ -34,7 +34,8 @@ const Game = () => {
 
   const startNewGame = async () => {
     try {
-      const session = await createSession();
+      console.log(sessionState);
+      const session = await createSession(sessionState);
       setSessionState(session);
 
       const gameState = await getGameState(session);
