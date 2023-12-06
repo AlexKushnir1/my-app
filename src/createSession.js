@@ -1,9 +1,10 @@
 import { parseString } from "./parseString";
 import { BASE_URL } from "./Components/Game";
 
-export const createSession = async () => {
+export const createSession = async (sessionState) => {
   try {
-    const response = await fetch(`${BASE_URL}/new_game`, {
+    const isSessionActive = sessionState ? `session_id=${sessionState.session_id}` : "";
+    const response = await fetch(`${BASE_URL}/new_game?${isSessionActive}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

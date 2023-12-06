@@ -5,7 +5,7 @@ import { createSession } from "../createSession";
 import { getGameState } from "../getGameState";
 import { makeMove } from "../makeMove";
 
-export const BASE_URL = "http://34.118.92.227:8080";
+export const BASE_URL = "http://34.118.73.81:8080";
 
 const Game = () => {
   const [gameState, setGameState] = useState({
@@ -34,7 +34,7 @@ const Game = () => {
 
   const startNewGame = async () => {
     try {
-      const session = await createSession();
+      const session = await createSession(sessionState);
       setSessionState(session);
 
       const gameState = await getGameState(session);
